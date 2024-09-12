@@ -93,10 +93,11 @@ COPY conversion /opt/dangerzone/dangerzone/conversion
 RUN addgroup -g 1000 dangerzone && \
     adduser -u 1000 -s /bin/true -G dangerzone -h /home/dangerzone -D dangerzone
 
+
 ###########################################
 # gVisor wrapper image
 
-FROM alpine:latest
+FROM alpine:latest AS gvisor-wrapper-image
 
 RUN apk --no-cache -U upgrade && \
     apk --no-cache add python3
