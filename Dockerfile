@@ -1,7 +1,7 @@
 ###########################################
 # Build PyMuPDF
 
-FROM alpine:latest as pymupdf-build
+FROM alpine:latest AS pymupdf-build
 ARG ARCH
 ARG REQUIREMENTS_TXT
 
@@ -25,7 +25,7 @@ RUN pip install -vv --break-system-packages --require-hashes -r /tmp/requirement
 ###########################################
 # Download Tesseract data
 
-FROM alpine:latest as tessdata-dl
+FROM alpine:latest AS tessdata-dl
 ARG TESSDATA_CHECKSUM=d0e3bb6f3b4e75748680524a1d116f2bfb145618f8ceed55b279d15098a530f9
 
 # Download the trained models from the latest GitHub release of Tesseract, and
@@ -48,7 +48,8 @@ RUN mkdir /usr/share/tessdata/ && mkdir tessdata && cd tessdata \
 
 ###########################################
 # Download H2ORestart
-FROM alpine:latest as h2orestart-dl
+
+FROM alpine:latest AS h2orestart-dl
 ARG H2ORESTART_CHECKSUM=5db816a1e57b510456633f55e693cb5ef3675ef8b35df4f31c90ab9d4c66071a
 RUN mkdir /libreoffice_ext && cd libreoffice_ext \
     && H2ORESTART_FILENAME=h2orestart.oxt \
