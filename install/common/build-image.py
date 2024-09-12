@@ -83,7 +83,7 @@ def main():
             print("Saving container image")
             cmd = subprocess.Popen(
                 [
-                    CONTAINER_RUNTIME,
+                    args.runtime,
                     "save",
                     TAG,
                 ],
