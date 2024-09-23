@@ -16,7 +16,7 @@ def build_data(base_path, path_prefix, dir_id, dir_name):
         data["component_id"] = "ApplicationFiles"
     else:
         data["component_id"] = "Component" + dir_id
-    data["component_guid"] = str(uuid.uuid4())
+    data["component_guid"] = str(uuid.uuid4()).upper()
 
     for entry in os.listdir(base_path):
         entry_path = os.path.join(base_path, entry)
@@ -86,7 +86,7 @@ def main():
         # -rc markers.
         dangerzone_version = f.read().strip().split("-")[0]
 
-    dangerzone_product_upgrade_code = "12b9695c-965b-4be0-bc33-21274e809576"
+    dangerzone_product_upgrade_code = "12B9695C-965B-4BE0-BC33-21274E809576"
 
     dist_dir = os.path.join(
         os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
@@ -184,7 +184,7 @@ def main():
         programmenufolder_el,
         "Component",
         Id="ApplicationShortcuts",
-        Guid="539e7de8-a124-4c09-aa55-0dd516aad7bc",
+        Guid="539E7DE8-A124-4C09-AA55-0DD516AAD7BC",
     )
     ET.SubElement(
         shortcut_el,
