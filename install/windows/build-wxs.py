@@ -84,7 +84,9 @@ def main():
     with open(version_filename) as f:
         # Read the Dangerzone version from share/version.txt, and remove any potential
         # -rc markers.
-        version = f.read().strip().split("-")[0]
+        dangerzone_version = f.read().strip().split("-")[0]
+
+    dangerzone_product_upgrade_code = "12b9695c-965b-4be0-bc33-21274e809576"
 
     dist_dir = os.path.join(
         os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
@@ -118,7 +120,7 @@ def main():
         "Package",
         Name="Dangerzone",
         Manufacturer="Freedom of the Press Foundation",
-        UpgradeCode="$(var.ProductUpgradeCode)",
+        UpgradeCode=dangerzone_product_upgrade_code,
         Language="1033",
         Compressed="yes",
         Codepage="1252",
@@ -128,7 +130,7 @@ def main():
         package_el,
         "SummaryInformation",
         Keywords="Installer",
-        Description="Dangerzone $(var.ProductVersion) Installer",
+        Description="Dangerzone " + dangerzone_version + " Installer",
         Codepage="1252",
     )
     ET.SubElement(package_el, "MediaTemplate", EmbedCab="yes")
@@ -226,8 +228,6 @@ def main():
     ET.SubElement(feature_el, "ComponentGroupRef", Id="ApplicationComponents")
     ET.SubElement(feature_el, "ComponentRef", Id="ApplicationShortcuts")
 
-    print(f'<?define ProductVersion = "{version}"?>')
-    print('<?define ProductUpgradeCode = "12b9695c-965b-4be0-bc33-21274e809576"?>')
     ET.indent(wix_el, space="    ")
     print(ET.tostring(wix_el).decode())
 
