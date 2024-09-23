@@ -1,0 +1,39 @@
+﻿<?define ProductVersion = "0.10.0"?>
+<?define ProductUpgradeCode = "12b9695c-965b-4be0-bc33-21274e809576"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+    <Package Name="Dangerzone" Manufacturer="Freedom of the Press Foundation" UpgradeCode="$(var.ProductUpgradeCode)" Language="1033" Compressed="yes" Codepage="1252" Version="$(var.ProductVersion)" InstallerVersion="100">
+        <SummaryInformation Keywords="Installer" Description="Dangerzone $(var.ProductVersion) Installer" Codepage="1252" />
+        <MediaTemplate EmbedCab="yes" />
+        <Icon Id="ProductIcon" SourceFile=".\share\dangerzone.ico" />
+        <Property Id="ARPPRODUCTICON" Value="ProductIcon" />
+        <Property Id="ARPHELPLINK" Value="https://dangerzone.rocks" />
+        <Property Id="ARPURLINFOABOUT" Value="https://freedom.press" />
+        <WixVariable Id="WixUILicenseRtf" Value=".\install\windows\license.rtf" />
+        <WixVariable Id="WixUIDialogBmp" Value=".\install\windows\dialog.bmp" />
+        <MajorUpgrade AllowSameVersionUpgrades="yes" DowngradeErrorMessage="A newer version of [ProductName] is already installed. If you are sure you want to downgrade, remove the existing installation via Programs and Features." />
+
+        <UI>
+            <ui:WixUI Id="WixUI_InstallDir" InstallDirectory="INSTALLFOLDER" />
+            <UIRef Id="WixUI_ErrorProgressText" />
+        </UI><StandardDirectory Id="ProgramFilesFolder">
+            <Directory Id="INSTALLFOLDER" Name="Dangerzone" />
+        </StandardDirectory>
+
+        <ComponentGroup Id="ApplicationComponents" Directory="INSTALLFOLDER">
+            <!-- Unlike with the Property and WixVariable elements above, file harvesting needs a relative path from the location of Dangerzone.wxs instead of from where the wix build command is executed-->
+            <Files Include="..\..\build\exe.win-amd64-3.12\**" />
+        </ComponentGroup>
+
+        <StandardDirectory Id="ProgramMenuFolder">
+            <Component Id="ApplicationShortcuts" Guid="539e7de8-a124-4c09-aa55-0dd516aad7bc">
+                <Shortcut Id="DangerzoneStartMenuShortcut" Name="Dangerzone" Description="Dangerzone" Target="[INSTALLFOLDER]dangerzone.exe" WorkingDirectory="INSTALLFOLDER" />
+                <RegistryValue Root="HKCU" Key="Software\Freedom of the Press Foundation\Dangerzone" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+            </Component>
+        </StandardDirectory>
+
+        <Feature Id="Main">
+            <ComponentGroupRef Id="ApplicationComponents" />
+            <ComponentRef Id="ApplicationShortcuts" />
+        </Feature>
+    </Package>
+</Wix>
