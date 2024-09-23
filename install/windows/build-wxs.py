@@ -215,7 +215,7 @@ def main():
     programfilesfolder_el = ET.SubElement(
         package_el,
         "StandardDirectory",
-        Id="ProgramFilesFolder",
+        Id="ProgramFiles64Folder",
     )
 
     # Generate the directory layout for the installed product
