@@ -153,10 +153,6 @@ def main():
         Value="https://freedom.press",
     )
     ET.SubElement(
-        package_el, "ui:WixUI", Id="WixUI_InstallDir", InstallDirectory="INSTALLFOLDER"
-    )
-    ET.SubElement(package_el, "UIRef", Id="WixUI_ErrorProgressText")
-    ET.SubElement(
         package_el,
         "WixVariable",
         Id="WixUILicenseRtf",
@@ -173,6 +169,13 @@ def main():
         "MajorUpgrade",
         DowngradeErrorMessage="A newer version of [ProductName] is already installed. If you are sure you want to downgrade, remove the existing installation via Programs and Features.",
     )
+
+    # Add The UI element
+    ui_el = ET.SubElement(package_el, "UI")
+    ET.SubElement(
+        ui_el, "ui:WixUI", Id="WixUI_InstallDir", InstallDirectory="INSTALLFOLDER"
+    )
+    ET.SubElement(ui_el, "UIRef", Id="WixUI_ErrorProgressText")
 
     # Add the ProgramMenuFolder StandardDirectory
     programmenufolder_el = ET.SubElement(
