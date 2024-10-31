@@ -177,6 +177,43 @@ def main():
     )
     ET.SubElement(ui_el, "UIRef", Id="WixUI_ErrorProgressText")
 
+    # Workaround for an issue after upgrading from WiX Toolset v3 to v5 where the older
+    # version of Dangerzone is not uninstalled during the upgrade
+    #
+    # Fix the issue by adding some extra functionality to the "Next" button on the welcome screen
+    # of the installer. When the user clicks it to proceed with the installation this:
+    # 1. Flips the install scope to "perUser" which is the default in WiX v3
+    # 2. Finds the older installation
+    # 3. And finally flips the scope back to "perMachine" which is the default in WiX v4 and newer
+    #
+    # Adapted from this stack overflow answer: https://stackoverflow.com/a/35064434
+    #
+    # TODO: Revert this once we are reasonably certain there are no affected Dangerzone Installations?
+    ET.SubElement(
+        ui_el,
+        "Publish",
+        Dialog="WelcomeDlg",
+        Control="Next",
+        Property="ALLUSERS",
+        Value="{}",
+    )
+    ET.SubElement(
+        ui_el,
+        "Publish",
+        Dialog="WelcomeDlg",
+        Control="Next",
+        Event="DoAction",
+        Value="FindRelatedProducts",
+    )
+    ET.SubElement(
+        ui_el,
+        "Publish",
+        Dialog="WelcomeDlg",
+        Control="Next",
+        Property="ALLUSERS",
+        Value="1",
+    )
+
     # Add the ProgramMenuFolder StandardDirectory
     programmenufolder_el = ET.SubElement(
         package_el,
