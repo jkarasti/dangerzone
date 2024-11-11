@@ -476,20 +476,21 @@ poetry shell
 
 ### If you want to build the Windows installer
 
-Install [.NET SDK](https://dotnet.microsoft.com/en-us/download) version 6 or later. Then, open a terminal and install the [WiX Toolset .NET tool](https://wixtoolset.org/) v5.0.1.
+Install [.NET SDK](https://dotnet.microsoft.com/en-us/download) version 6 or later. Then, open a terminal and install the latest version of [WiX Toolset .NET tool](https://wixtoolset.org/) **v5** with:
 
 ```sh
-dotnet tool install --global wix --version 5.0.1
+dotnet tool install --global wix --version 5.*
 ```
 
-Install the WiX UI extension **in a new terminal**, in order to use the newly installed `wix` .NET tool:
+Install the WiX UI extension. You may need to open a new terminal in order to use the newly installed `wix` .NET tool:
 
 ```sh
-wix extension add --global WixToolset.UI.wixext/5.0.1
+wix extension add --global WixToolset.UI.wixext/5.x.y
 ```
 
 > [!IMPORTANT]  
-> To prevent compatibility issues, ensure that all WiX plugins you install match the version of WiX Toolset.
+> To avoid compatibility issues, ensure the WiX UI extension version matches the version of the WiX Toolset.
+> Run `wix --version` to check the version of WiX Toolset you have installed and replace `5.x.y` with the full version number without the Git revision.
 
 ### If you want to sign binaries with Authenticode
 
