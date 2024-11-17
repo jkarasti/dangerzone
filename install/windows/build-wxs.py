@@ -177,6 +177,25 @@ def main():
     )
     ET.SubElement(ui_el, "UIRef", Id="WixUI_ErrorProgressText")
 
+    # Experimental fix for the Scope issue.
+    # Try detecting the older version of Dangerzone by searching for the registry key written by the installer when
+    # Dangerzone 0.8.0 was installed and stop the new installer from running if it's found.
+    #
+    # Note that this seems to allow installing Dangerzone 0.8.0 after installing Dangerzone from this branch.
+    # In this case the installer errors until Dangerzone 0.8.0 is uninstalled again
+    registry_search_el = ET.SubElement(package_el, "Property", Id="OLDFOUND")
+    ET.SubElement(
+        registry_search_el,
+        "RegistrySearch",
+        Root="HKLM",
+        Key="SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{03C2D2B2-9955-4AED-831F-DA4E67FC0FDB}",
+        Name="DisplayName",
+        Type="raw",
+    )
+    ET.SubElement(
+        package_el, "Launch", Condition="NOT OLDFOUND", Message="Test Test Test Already installed Test Test Test"
+    )
+
     # Add the ProgramMenuFolder StandardDirectory
     programmenufolder_el = ET.SubElement(
         package_el,
